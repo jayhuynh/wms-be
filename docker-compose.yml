@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  mariadb:
+    image: mariadb:10.4.11
+    environment:
+      MYSQL_ROOT_PASSWORD: str0ngp@ssword
+    ports:
+      - 3306:3306
+  wms-be:
+    build:
+      context: .
+    volumes:
+      - .:/app
+    depends_on:
+      - mariadb
+    ports:
+      - 3000:3000
