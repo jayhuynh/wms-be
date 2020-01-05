@@ -1,0 +1,27 @@
+{
+  "name": "wms-be",
+  "version": "1.0.0",
+  "description": "Warehouse management system",
+  "main": "src/app.js",
+  "scripts": {
+    "build": "node src/app.js",
+    "watch": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jayhuynh/wms-be.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jayhuynh/wms-be/issues"
+  },
+  "homepage": "https://github.com/jayhuynh/wms-be#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
