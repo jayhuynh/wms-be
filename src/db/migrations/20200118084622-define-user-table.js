@@ -1,7 +1,8 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('users', {
+    console.log("Migrating..")
+    return queryInterface.createTable('wms_users', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,18 +10,20 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       email: {
-        type: Sequelize.STRING
+        allowNull: false,
+        type: Sequelize.STRING(255),
+        unique: true
       },
       password: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING(255)
       },
       full_name: {
         type: Sequelize.STRING
       },
       role: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING(50)
       },
       createdAt: {
         allowNull: false,
@@ -34,9 +37,10 @@ module.exports = {
         defaultValue: Sequelize.literal('NOW() ON UPDATE NOW()'),
         field:"updated_at"
       }
+    },{
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('users');
+    return queryInterface.dropTable('wms_users');
   }
 };
