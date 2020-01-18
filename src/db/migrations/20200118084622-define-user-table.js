@@ -1,7 +1,6 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    console.log("Migrating..")
     return queryInterface.createTable('wms_users', {
       id: {
         allowNull: false,
@@ -29,16 +28,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.fn('NOW'),
-        field:"created_at"
+        field: "created_at"
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('NOW() ON UPDATE NOW()'),
-        field:"updated_at"
+        field: "updated_at"
       }
-    },{
-    });
+    }, {});
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('wms_users');

@@ -1,14 +1,13 @@
-const express=require('express')
-const dotenv=require('dotenv').config()
+const express = require('express');
+const dotenv = require('dotenv').config();
 
-const PORT=process.env.PORT
-const app=express()
+const PORT = process.env.PORT;
+const app = express();
 
-app.get('/',(req,res)=>res.send('INDEX'))
+app.get('/', (req, res) => res.send('INDEX'));
 
-app.use('/users',require('./routes/routers/user'))
+app.use('/users', require('./routes/routers/user'));
 
-app.listen(PORT, () => 
-console.log(`Server is running on port ${PORT}!`)
-)
-
+app.listen(PORT, () =>
+    console.log(`Server is running on port ${PORT}!`)
+);

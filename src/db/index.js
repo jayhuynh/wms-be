@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize')
-const config = require('../config/database')[process.env.NODE_ENV]
+const Sequelize = require('sequelize');
+const config = require('../config/database')[process.env.NODE_ENV];
 
 //set up connection 
 const db = new Sequelize(
@@ -9,13 +9,16 @@ const db = new Sequelize(
         host: config.host,
         dialect: config.dialect,
         dialectOptions: config.dialectOptions
-    })
+    });
 
 //Test connection
 db.authenticate().then(() => {
-    console.log('Successfully connected to database!')
+    console.log('Successfully connected to database!');
 }).catch((e) => {
-    console.log('Unable to connect to database: ', e)
-})
+    console.log('Unable to connect to database: ', e);
+});
 
-module.exports={db,Sequelize}
+module.exports = {
+    db,
+    Sequelize
+};
