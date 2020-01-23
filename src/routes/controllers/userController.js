@@ -9,10 +9,10 @@ exports.getUsers = (req, res) => {
     User.findAll({
         raw: true
     }).then((rs) => {
-        if(rs){
+        if (rs) {
             res.status(200).json(rs);
-        }else{
-            res.status(404).json(`{"error":"users not found"}`)
+        } else {
+            res.status(404).json(`{"error":"users not found"}`);
         }
     }).catch((e) => {
         console.log('Error: ', e);
@@ -24,10 +24,10 @@ exports.getUser = (req, res) => {
     User.findByPk(id, {
         raw: true
     }).then((rs) => {
-        if(rs){
+        if (rs) {
             res.status(200).json(rs);
-        }else{
-            res.status(404).json(`{"error":"user ${id} not found"}`)
+        } else {
+            res.status(404).json(`{"error":"user ${id} not found"}`);
         }
     }).catch((e) => {
         console.log('Error: ', e);

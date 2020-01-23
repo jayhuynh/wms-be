@@ -4,7 +4,7 @@ const dotenv = require('dotenv').config();
 const PORT = process.env.PORT;
 const app = express();
 
-app.use((reg, res, next) => {
+app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     next();
 });
