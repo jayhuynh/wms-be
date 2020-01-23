@@ -19,7 +19,7 @@ module.exports = {
       },
       fullName: {
         type: Sequelize.STRING,
-        field:"full_name"
+        field: "full_name"
       },
       role: {
         allowNull: false,
@@ -36,6 +36,12 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('NOW() ON UPDATE NOW()'),
         field: "updated_at"
+      },
+      deletedAt: {
+        allowNull: true,
+        type: Sequelize.DATE,
+        defaultValue: null,
+        field: "deleted_at"
       }
     }, {});
   },
