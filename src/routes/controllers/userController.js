@@ -9,10 +9,14 @@ exports.getUsers = (req, res) => {
     User.findAll({
         raw: true
     }).then((rs) => {
-        res.status(200).json(rs||"{'error':'users not found'}");
+        if (rs) {
+            res.status(200).json(rs);
+        } else {
+            res.status(404).json(`{"error":"users not found"}`);
+        }
     }).catch((e) => {
         console.log('Error: ', e);
-        res.status(500);
+        res.status(500).send();
     });
 }
 exports.getUser = (req, res) => {
@@ -20,10 +24,13 @@ exports.getUser = (req, res) => {
     User.findByPk(id, {
         raw: true
     }).then((rs) => {
-        console.log(rs)
-        res.status(200).json(rs||`{'error':'user ${id} not found'}`);
+        if (rs) {
+            res.status(200).json(rs);
+        } else {
+            res.status(404).json(`{'error':'user ${id} not found'}`);
+        }
     }).catch((e) => {
         console.log('Error: ', e);
-        res.status(500);
+        res.status(500).send();
     });
 };

@@ -16,8 +16,9 @@ module.exports = (queryInterface, Sequelize) => {
       allowNull: false,
       type: Sequelize.STRING(255)
     },
-    full_name: {
-      type: Sequelize.STRING
+    fullName: {
+      type: Sequelize.STRING,
+      field: "full_name"
     },
     role: {
       allowNull: false,
@@ -36,8 +37,11 @@ module.exports = (queryInterface, Sequelize) => {
       field: "updated_at"
     }
   }, {
-    charset: 'utf8',
-    collate: 'utf8_general_ci'
+    defaultScope: {
+      attributes: {
+        exclude: ['password']
+      }
+    }
   });
   User.associate = function (models) {
     // associations can be defined here
