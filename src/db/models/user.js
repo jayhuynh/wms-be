@@ -1,5 +1,8 @@
 'use strict';
 module.exports = (queryInterface, Sequelize) => {
+  const {
+    Op
+  } = Sequelize;
   const User = queryInterface.define('wms_user', {
     id: {
       allowNull: false,
@@ -35,11 +38,22 @@ module.exports = (queryInterface, Sequelize) => {
       type: Sequelize.DATE,
       defaultValue: Sequelize.literal('NOW() ON UPDATE NOW()'),
       field: "updated_at"
+    },
+    deletedAt: {
+      allowNull: true,
+      type: Sequelize.DATE,
+      defaultValue: null,
+      field: "deleted_at"
     }
   }, {
     defaultScope: {
       attributes: {
-        exclude: ['password']
+        exclude: ['password', 'deletedAt']
+      },
+      where: {
+        deletedAt: {
+          [Op.is]: null
+        }
       }
     }
   });
