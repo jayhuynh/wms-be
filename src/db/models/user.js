@@ -36,7 +36,7 @@ module.exports = (queryInterface, Sequelize) => {
     updatedAt: {
       allowNull: false,
       type: Sequelize.DATE,
-      defaultValue: Sequelize.literal('NOW() ON UPDATE NOW()'),
+      defaultValue: Sequelize.fn('NOW'),//sequelize call this again whenever update
       field: "updated_at"
     },
     deletedAt: {

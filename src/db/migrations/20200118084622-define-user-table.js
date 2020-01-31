@@ -34,10 +34,10 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('NOW() ON UPDATE NOW()'),
+        defaultValue: Sequelize.fn('NOW'),//sequelize call this again whenever update
         field: "updated_at"
       },
-      deletedAt: {
+      deletedAt: {//only show rows which deleted_at is null
         allowNull: true,
         type: Sequelize.DATE,
         defaultValue: null,
