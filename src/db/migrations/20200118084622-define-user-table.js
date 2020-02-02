@@ -19,7 +19,7 @@ module.exports = {
       },
       fullName: {
         type: Sequelize.STRING,
-        field:"full_name"
+        field: "full_name"
       },
       role: {
         allowNull: false,
@@ -34,8 +34,14 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('NOW() ON UPDATE NOW()'),
+        defaultValue: Sequelize.fn('NOW'),//sequelize call this again whenever update
         field: "updated_at"
+      },
+      deletedAt: {//only show rows which deleted_at is null
+        allowNull: true,
+        type: Sequelize.DATE,
+        defaultValue: null,
+        field: "deleted_at"
       }
     }, {});
   },
