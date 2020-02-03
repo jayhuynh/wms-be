@@ -8,15 +8,13 @@ module.exports = {
     dialect: process.env.DB_DIALECT,
     dialectOptions: {
       timezone: "Etc/GMT+7"
-    },
-    operatorsAliases: false
+    }
   },
   production: {
     username: "root",
     password: null,
     database: "database_production",
     host: "127.0.0.1",
-    dialect: "mysql",
-    operatorsAliases: false
+    dialect: "mysql"
   }
 };
