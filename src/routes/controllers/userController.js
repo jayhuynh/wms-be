@@ -1,3 +1,4 @@
+const DEBUG = process.env.NODE_ENV === 'development';
 const {
     db,
     Sequelize
@@ -9,8 +10,17 @@ const {
 
 const User = require('../../db/models/user')(db, Sequelize);
 
+const isNumericRegex = /^[0-9]+$/;
+
 exports.getUsers = (req, res) => {
+    
+    //Pagination
+    const limit = escape(req.query.limit).match(isNumericRegex) ? escape(req.query.limit) : null;
+    const offset = escape(req.query.offset).match(isNumericRegex) ? escape(req.query.offset) : null;
+
     User.findAll({
+        limit: parseInt(limit),
+        offset: parseInt(offset),
         raw: true
     }).then((rs) => {
         if (rs) {
@@ -19,10 +29,14 @@ exports.getUsers = (req, res) => {
             res.status(404).json(`{"error":"users not found"}`);
         }
     }).catch((e) => {
-        console.log('Error: ', e.message);
-        res.status(500).send({
-            error: e.message
-        });
+        if (DEBUG) {
+            console.log('Error: ', e.message);
+            res.status(500).send({
+                error: e.message
+            });
+        }else{
+            res.status(500).send();
+        }
     });
 }
 
@@ -37,10 +51,14 @@ exports.getUser = (req, res) => {
             res.status(404).json(`{'error':'user ${id} not found'}`);
         }
     }).catch((e) => {
-        console.log('Error: ', e.message);
-        res.status(500).send({
-            error: e.message
-        });
+        if (DEBUG) {
+            console.log('Error: ', e.message);
+            res.status(500).send({
+                error: e.message
+            });
+        }else{
+            res.status(500).send();
+        }
     });
 };
 
@@ -68,9 +86,13 @@ exports.deleteUser = async (req, res) => {
         }
 
     }).catch((e) => {
-        console.log('Error: ', e.message);
-        res.status(500).send({
-            error: e.message
-        });
+        if (DEBUG) {
+            console.log('Error: ', e.message);
+            res.status(500).send({
+                error: e.message
+            });
+        }else{
+            res.status(500).send();
+        }
     })
 }
