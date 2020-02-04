@@ -10,17 +10,40 @@ const {
 
 const User = require('../../db/models/user')(db, Sequelize);
 
-const isNumericRegex = /^[0-9]+$/;
+//validate raw params that need to convert to int
+const validIntReqParam = (rawParam) => {
+    const isNumericRegex = /^[0-9]+$/;
+
+    if (rawParam !== undefined) {
+        //escape raw parameter
+        rawParam = escape(rawParam);
+        //check for numeric => do parseInt, else return null
+        rawParam = rawParam.match(isNumericRegex) ? parseInt(rawParam) : null;
+        //return false if null, else continue
+        if (rawParam === null) {
+            return false;
+        }
+    }
+    //return undefined or an int
+    return rawParam;
+}
 
 exports.getUsers = (req, res) => {
-    
-    //Pagination
-    let limit = escape(req.query.limit)
-    let offset = escape(req.query.offset)
-    
-    limit = limit.match(isNumericRegex) ? parseInt(limit) : null;
-    offset= offset.match(isNumericRegex) ? parseInt(offset) : null;
-    
+
+    //PAGINATION//
+    //Get raw params
+    let limit = req.query.limit;
+    let offset = req.query.offset;
+
+    //validate
+    limit = validIntReqParam(limit);
+    offset = validIntReqParam(offset);
+
+    //return bad request if false
+    if (limit === false || offset === false) {
+        return res.status(400).send();
+    }
+
     User.findAll({
         limit,
         offset,
@@ -37,7 +60,7 @@ exports.getUsers = (req, res) => {
             res.status(500).send({
                 error: e.message
             });
-        }else{
+        } else {
             res.status(500).send();
         }
     });
@@ -59,7 +82,7 @@ exports.getUser = (req, res) => {
             res.status(500).send({
                 error: e.message
             });
-        }else{
+        } else {
             res.status(500).send();
         }
     });
@@ -94,7 +117,7 @@ exports.deleteUser = async (req, res) => {
             res.status(500).send({
                 error: e.message
             });
-        }else{
+        } else {
             res.status(500).send();
         }
     })
