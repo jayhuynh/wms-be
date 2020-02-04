@@ -15,12 +15,15 @@ const isNumericRegex = /^[0-9]+$/;
 exports.getUsers = (req, res) => {
     
     //Pagination
-    const limit = escape(req.query.limit).match(isNumericRegex) ? escape(req.query.limit) : null;
-    const offset = escape(req.query.offset).match(isNumericRegex) ? escape(req.query.offset) : null;
-
+    let limit = escape(req.query.limit)
+    let offset = escape(req.query.offset)
+    
+    limit = limit.match(isNumericRegex) ? parseInt(limit) : null;
+    offset= offset.match(isNumericRegex) ? parseInt(offset) : null;
+    
     User.findAll({
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit,
+        offset,
         raw: true
     }).then((rs) => {
         if (rs) {
