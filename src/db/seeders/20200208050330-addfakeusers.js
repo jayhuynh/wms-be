@@ -10,7 +10,7 @@ module.exports = {
       faker.seed(i);
       const isAdmin = (Math.random() > 0.5) ? true : false;
       const seed = {
-        email: faker.internet.email(),
+        email: 'testEmailYouMfker_'+faker.internet.email(),
         full_name: faker.name.findName(),
         password: faker.internet.password(),
         role: isAdmin ? 'admin' : 'sub',
@@ -25,8 +25,8 @@ module.exports = {
       Op
     } = Sequelize;
     return queryInterface.bulkDelete('wms_users', {
-      id: {
-        [Op.between]: [3, 99]
+      email: {
+        [Op.like]: 'testEmailYouMfker_%'
       }
     }, {});
   }
