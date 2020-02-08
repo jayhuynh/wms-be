@@ -1,13 +1,22 @@
 const express = require('express');
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 
 const PORT = process.env.PORT;
+const ALLOW_ORIGIN = process.env.ALLOW_ORIGIN;
+
 const app = express();
 
+// Add headers
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', ALLOW_ORIGIN);
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+
+    // Pass to next layer of middleware
     next();
-});
+});	
 
 app.get('/', (req, res) => res.send('INDEX'));
 
