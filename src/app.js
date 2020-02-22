@@ -18,6 +18,10 @@ app.use((req, res, next) => {
     next();
 });	
 
+app.use(express.json()) // for parsing application/json
+
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+
 app.get('/', (req, res) => res.send('INDEX'));
 
 app.use('/users', require('./routes/routers/user'));
