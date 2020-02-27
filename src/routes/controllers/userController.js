@@ -1,4 +1,5 @@
 const DEBUG = process.env.NODE_ENV === 'development';
+
 const {
     db,
     Sequelize
@@ -8,41 +9,22 @@ const {
     Op
 } = Sequelize
 
+const { validationResult } = require('express-validator');
+
 const User = require('../../db/models/user')(db, Sequelize);
 
-//validate raw params that need to convert to int
-const validIntReqParam = (rawParam) => {
-    const isNumericRegex = /^[0-9]+$/;
-
-    if (rawParam !== undefined) {
-        //escape raw parameter
-        rawParam = escape(rawParam);
-        //check for numeric => do parseInt, else return null
-        rawParam = rawParam.match(isNumericRegex) ? parseInt(rawParam) : null;
-        //return false if null, else continue
-        if (rawParam === null) {
-            return false;
-        }
-    }
-    //return undefined or an int
-    return rawParam;
-}
-
 exports.getUsers = (req, res) => {
+    // VALIDATE
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        if (DEBUG) {
+            console.log('Error: ', errors);
+        }
 
-    //PAGINATION//
-    //Get raw params
-    let limit = req.query.limit;
-    let offset = req.query.offset;
-
-    //validate
-    limit = validIntReqParam(limit);
-    offset = validIntReqParam(offset);
-
-    //return bad request if false
-    if (limit === false || offset === false) {
-        return res.status(400).send();
+        return res.status(400).json({ errors: errors.array() });
     }
+
+    const { limit, offset } = req.query;
 
     User.findAll({
         limit,
@@ -121,4 +103,56 @@ exports.deleteUser = async (req, res) => {
             res.status(500).send();
         }
     })
+}
+
+exports.createUser = async (req, res) => {
+    // VALIDATE
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        if (DEBUG) {
+            console.log('Error: ', errors);
+        }
+
+        return res.status(400).json({ errors: errors.array() });
+    }
+    const { email, password, fullName, role } = req.body;
+    //find or create new
+    await User.findOrCreate({
+        where: {
+            email
+        },
+        defaults: {
+            email,
+            password,
+            fullName,
+            role
+        }
+    }).then(([user, created]) => {
+        //if not created => email existed 
+        if (created) {
+            return res.json({
+                success: `User ${user.email} created successfully`
+            });
+        } else {
+            return res.status(400).json({
+                errors: [{
+                    value: "",
+                    msg: "Email is existed",
+                    param: "email",
+                    location: "body"
+                }]
+            });
+        }
+
+    }).catch((e) => { //throws errors 500 internal server error
+        if (DEBUG) {
+            console.log('Error: ', e.message);
+            res.status(500).send({
+                error: e.message
+            });
+        } else {
+            res.status(500).send();
+        }
+    })
+
 }
