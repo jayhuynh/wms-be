@@ -24,7 +24,8 @@ exports.getUsers = (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { limit, offset } = req.query;
+    const { offset } = req.query;
+    const limit = req.query.limit > 100 ? 100 : req.query.limit;
 
     User.findAll({
         limit,
@@ -76,7 +77,7 @@ exports.deleteUser = async (req, res) => {
 
     User.update({
         //append 'YYYYMMDDHHMMSS__' to current email => CONCAT( DATE_FORMAT(NOW(),'%Y%m%d%H%i%S') ,'__' , email)
-        email: Sequelize.fn('CONCAT', Sequelize.fn('DATE_FORMAT',Sequelize.fn('NOW'), "%Y%m%d%H%i%S"),'__', Sequelize.col("email")),
+        email: Sequelize.fn('CONCAT', Sequelize.fn('DATE_FORMAT', Sequelize.fn('NOW'), "%Y%m%d%H%i%S"), '__', Sequelize.col("email")),
         deletedAt: Sequelize.fn('NOW')
     }, {
         where: {
