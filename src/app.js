@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 require('dotenv').config();
 
 const PORT = process.env.PORT;
@@ -7,16 +8,11 @@ const ALLOW_ORIGIN = process.env.ALLOW_ORIGIN;
 const app = express();
 
 // Add headers
-app.use((req, res, next) => {
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', ALLOW_ORIGIN);
-
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
-
-    // Pass to next layer of middleware
-    next();
-});	
+app.use(cors({
+    origin: ALLOW_ORIGIN,
+    methods: ['GET, POST, PATCH, DELETE'],
+    allowedHeaders: ['X-Requested-With', 'Content-Type']
+}));
 
 app.get('/', (req, res) => res.send('INDEX'));
 
