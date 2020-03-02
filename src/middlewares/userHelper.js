@@ -16,7 +16,7 @@ exports.validateCreateUser = () => {
 
         body('password', 'Password can not be empty').not().isEmpty(),
 
-        body('password', 'Password must from 6 to 100 characters').isLength({
+        body('password', 'Password must from 8 to 100 characters').isLength({
             min: 8,
             max: 100
         }),
